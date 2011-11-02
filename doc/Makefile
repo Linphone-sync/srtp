@@ -11,7 +11,7 @@
 
 srcdir = .
 top_srcdir = ..
-top_builddir = ../
+top_builddir = ..
 
 
 # Determine the version of the library
