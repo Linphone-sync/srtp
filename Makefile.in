@@ -15,18 +15,18 @@
 
 .PHONY: all test build_table_apps
 
-all: libsrtp.so test
+all: test 
 
 runtest: build_table_apps test
 	@echo "running libsrtp test applications..."
-	crypto/test/cipher_driver$(EXE) -v
-	crypto/test/kernel_driver$(EXE) -v
-	test/rdbx_driver$(EXE) -v
-	test/srtp_driver$(EXE) -v
-	test/roc_driver$(EXE) -v
-	test/replay_driver$(EXE) -v
-	test/dtls_srtp_driver$(EXE)
-	cd test; ./rtpw_test.sh
+	crypto/test/cipher_driver$(EXE) -v >/dev/null
+	crypto/test/kernel_driver$(EXE) -v >/dev/null
+	test/rdbx_driver$(EXE) -v >/dev/null
+	test/srtp_driver$(EXE) -v >/dev/null
+	test/roc_driver$(EXE) -v >/dev/null
+	test/replay_driver$(EXE) -v >/dev/null
+	test/dtls_srtp_driver$(EXE) >/dev/null
+	cd test; $(abspath $(srcdir))/test/rtpw_test.sh >/dev/null	
 	@echo "libsrtp test applications passed."
 	$(MAKE) -C crypto runtest
 
@@ -67,7 +67,7 @@ libdir = @libdir@
 # implicit rules for object files and test apps
 
 %.o: %.c
-	$(COMPILE) -fPIC -c $< -o $@
+	$(COMPILE) -c $< -o $@
 
 %$(EXE): %.c
 	$(COMPILE) $(LDFLAGS) $< -o $@ $(SRTPLIB) $(LIBS)
@@ -99,14 +99,11 @@ cryptobj =  $(ciphers) $(hashes) $(math) $(stat) $(kernel) $(replay)
 
 # libsrtp.a (implements srtp processing)
 
-srtpobj = srtp/srtp.o 
+srtpobj = srtp/srtp.o srtp/ekt.o
 
 libsrtp.a: $(srtpobj) $(cryptobj) $(gdoi)
 	ar cr libsrtp.a $^
 	$(RANLIB) libsrtp.a
-
-libsrtp.so: $(srtpobj) $(cryptobj) $(gdoi)
-	$(CC) $(LDFLAGS) -shared -Wl,-soname,libsrtp.so.0 -o libsrtp.so.0.0  $^
 
 # libcryptomath.a contains general-purpose routines that are used to
 # generate tables and verify cryptoalgorithm implementations - this
@@ -189,31 +186,27 @@ tags:
 libsrtpdoc:
 	$(MAKE) -C doc
 
-.PHONY: clean superclean install
+.PHONY: clean superclean distclean install
 
 install:
-	@if [ -d $(DESTDIR)$(includedir)/srtp ]; then \
+	@if [ -r $(DESTDIR)$(includedir)/srtp/srtp.h ]; then \
 	   echo "you should run 'make uninstall' first"; exit 1;  \
 	fi
 	$(INSTALL) -d $(DESTDIR)$(includedir)/srtp
 	$(INSTALL) -d $(DESTDIR)$(libdir)
-	cp $(top_srcdir)/include/*.h $(DESTDIR)$(includedir)/srtp  
-	cp $(top_srcdir)/crypto/include/*.h $(DESTDIR)$(includedir)/srtp
-	cp crypto/include/config.h $(DESTDIR)$(includedir)/srtp
+	cp $(srcdir)/include/*.h $(DESTDIR)$(includedir)/srtp  
+	cp $(srcdir)/crypto/include/*.h $(DESTDIR)$(includedir)/srtp
+	if [ "$(srcdir)" != "." ]; then cp crypto/include/*.h $(DESTDIR)$(includedir)/srtp; fi
 	if [ -f libsrtp.a ]; then cp libsrtp.a $(DESTDIR)$(libdir)/; fi
-	if [ -f libsrtp.so.0.0 ]; then \
-		cp libsrtp.so.0.0 $(DESTDIR)$(libdir)/; \
-		ln -s libsrtp.so.0.0 $(DESTDIR)$(libdir)/libsrtp.so.0; \
-		ln -s libsrtp.so.0.0 $(DESTDIR)$(libdir)/libsrtp.so; \
-	fi
 
 uninstall:
-	rm -rf $(DESTDIR)$(includedir)/srtp
-	rm -rf $(DESTDIR)$(libdir)/libsrtp.a
+	rm -f $(DESTDIR)$(includedir)/srtp/*.h
+	rm -f $(DESTDIR)$(libdir)/libsrtp.a
+	-rmdir $(DESTDIR)$(includedir)/srtp
 
 clean:
 	rm -rf $(cryptobj) $(srtpobj) $(cryptomath) TAGS \
-        libcryptomath.a libsrtp.a libsrtp.so.0.0 core *.core test/core
+        libcryptomath.a libsrtp.a core *.core test/core
 	for a in * */* */*/*; do			\
               if [ -f "$$a~" ] ; then rm -f $$a~; fi;	\
         done;
@@ -226,8 +219,11 @@ clean:
 
 superclean: clean
 	rm -rf crypto/include/config.h config.log config.cache config.status \
-               Makefile .gdb_history test/.gdb_history .DS_Store
+               Makefile crypto/Makefile doc/Makefile \
+               .gdb_history test/.gdb_history .DS_Store
 	rm -rf autom4te.cache
+
+distclean: superclean
 
 distname = srtp-$(shell cat VERSION)
 
