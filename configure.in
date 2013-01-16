@@ -191,7 +191,7 @@ if test "$enable_gdoi" = "yes"; then
 fi
 AC_MSG_RESULT($enable_gdoi)
 
-AC_CONFIG_HEADER(crypto/include/config.h:config_in.h)
+AC_CONFIG_HEADERS(crypto/include/config.h:config_in.h)
 
 AC_OUTPUT(Makefile crypto/Makefile doc/Makefile)
 
