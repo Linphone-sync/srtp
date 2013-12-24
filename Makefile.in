@@ -240,4 +240,15 @@ distribution: runtest superclean
         fi
 	cd ..; tar cvzf $(distname).tgz srtp
 
+dist: superclean 
+	if ! [ -f VERSION ]; then exit 1; fi
+	if [ -f ../linphone-$(distname).tgz ]; then               \
+           mv ../linphone-$(distname).tgz ../linphone-$(distname).tgz.bak; \
+        fi
+	cd ..; tar cvzf linphone-$(distname).tgz srtp; cd srtp; mv ../linphone-$(distname).tgz .
+
+rpm:
+	$(MAKE) dist
+	TAR_OPTIONS=--wildcards rpmbuild -ta --clean --rmsource --rmspec linphone-$(distname).tgz
+
 # EOF

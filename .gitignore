@@ -2,4 +2,4 @@ Makefile
 *.o
 autom4te.cache
 configure
-
+linphone-srtp.spec
