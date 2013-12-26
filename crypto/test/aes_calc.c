@@ -105,7 +105,7 @@ main (int argc, char *argv[]) {
     exit(1);
   }
 
-  aes_encrypt(&data, &exp_key);
+  srtp_aes_encrypt(&data, &exp_key);
 
   /* write ciphertext to output */
   if (verbose) {

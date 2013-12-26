@@ -1999,7 +1999,7 @@ aes_inv_final_round(v128_t *state, const v128_t *round_key) {
 
 
 void
-aes_encrypt(v128_t *plaintext, const aes_expanded_key_t *exp_key) {
+srtp_aes_encrypt(v128_t *plaintext, const aes_expanded_key_t *exp_key) {
 
   /* add in the subkey */
   v128_xor_eq(plaintext, &exp_key->round[0]);

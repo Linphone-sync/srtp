@@ -182,7 +182,7 @@ aes_cbc_encrypt(aes_cbc_ctx_t *c,
     debug_print(mod_aes_cbc, "inblock:  %s", 
 	      v128_hex_string(&c->state));
 
-    aes_encrypt(&c->state, &c->expanded_key);
+    srtp_aes_encrypt(&c->state, &c->expanded_key);
 
     debug_print(mod_aes_cbc, "outblock: %s", 
 	      v128_hex_string(&c->state));

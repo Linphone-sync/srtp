@@ -70,7 +70,7 @@ aes_expand_decryption_key(const uint8_t *key,
 			  aes_expanded_key_t *expanded_key);
 
 void
-aes_encrypt(v128_t *plaintext, const aes_expanded_key_t *exp_key);
+srtp_aes_encrypt(v128_t *plaintext, const aes_expanded_key_t *exp_key);
 
 void
 aes_decrypt(v128_t *plaintext, const aes_expanded_key_t *exp_key);

@@ -108,7 +108,7 @@ x917_prng_get_octet_string(uint8_t *dest, uint32_t len) {
     v128_copy(&buffer, &x917_prng.state);
 
     /* apply aes to buffer */
-    aes_encrypt(&buffer, &x917_prng.key);
+    srtp_aes_encrypt(&buffer, &x917_prng.key);
     
     /* write data to output */
     *dest++ = buffer.v8[0];
@@ -132,7 +132,7 @@ x917_prng_get_octet_string(uint8_t *dest, uint32_t len) {
     buffer.v32[0] ^= t;
 
     /* encrypt buffer */
-    aes_encrypt(&buffer, &x917_prng.key);
+    srtp_aes_encrypt(&buffer, &x917_prng.key);
 
     /* copy buffer into state */
     v128_copy(&x917_prng.state, &buffer);
@@ -150,7 +150,7 @@ x917_prng_get_octet_string(uint8_t *dest, uint32_t len) {
     v128_copy(&buffer, &x917_prng.state);
 
     /* apply aes to buffer */
-    aes_encrypt(&buffer, &x917_prng.key);
+    srtp_aes_encrypt(&buffer, &x917_prng.key);
 
     /* write data to output */
     for (i=0; i < tail_len; i++) {
@@ -163,7 +163,7 @@ x917_prng_get_octet_string(uint8_t *dest, uint32_t len) {
     buffer.v32[0] ^= t;
 
     /* encrypt buffer */
-    aes_encrypt(&buffer, &x917_prng.key);
+    srtp_aes_encrypt(&buffer, &x917_prng.key);
 
     /* copy buffer into state */
     v128_copy(&x917_prng.state, &buffer);
