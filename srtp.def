@@ -78,8 +78,8 @@ rdb_increment
 rdb_get_value
 aes_expand_encryption_key
 aes_expand_decryption_key
-aes_encrypt
-aes_decrypt
+srtp_aes_encrypt
+srtp_aes_decrypt
 aes_icm_context_init
 aes_icm_set_iv
 aes_icm_encrypt

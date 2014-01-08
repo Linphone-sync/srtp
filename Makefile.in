@@ -195,8 +195,9 @@ libsrtpdoc:
 install:
 	$(INSTALL) -d $(DESTDIR)$(includedir)/srtp
 	$(INSTALL) -d $(DESTDIR)$(libdir)
-	cp include/*.h $(DESTDIR)$(includedir)/srtp  
-	cp crypto/include/*.h $(DESTDIR)$(includedir)/srtp
+	cp $(srcdir)/include/*.h $(DESTDIR)$(includedir)/srtp  
+	cp $(srcdir)/crypto/include/*.h $(DESTDIR)$(includedir)/srtp
+	if [ "$(srcdir)" != "." ]; then cp -f crypto/include/*.h $(DESTDIR)$(includedir)/srtp; fi
 	if [ -f libsrtp.a ]; then cp libsrtp.a $(DESTDIR)$(libdir)/; fi
 	if [ -f libsrtp.so.0.0 ]; then \
 		cp libsrtp.so.0.0 $(DESTDIR)$(libdir)/; \

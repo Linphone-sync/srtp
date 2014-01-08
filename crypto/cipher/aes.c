@@ -2032,7 +2032,7 @@ srtp_aes_encrypt(v128_t *plaintext, const aes_expanded_key_t *exp_key) {
 }
 
 void
-aes_decrypt(v128_t *plaintext, const aes_expanded_key_t *exp_key) {
+srtp_aes_decrypt(v128_t *plaintext, const aes_expanded_key_t *exp_key) {
 
   /* add in the subkey */
   v128_xor_eq(plaintext, &exp_key->round[0]);

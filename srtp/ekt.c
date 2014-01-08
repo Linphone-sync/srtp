@@ -151,7 +151,7 @@ aes_decrypt_with_raw_key(void *ciphertext, const void *key, int key_len) {
   aes_expanded_key_t expanded_key;
 
   aes_expand_decryption_key(key, key_len, &expanded_key);
-  aes_decrypt(ciphertext, &expanded_key);
+  srtp_aes_decrypt(ciphertext, &expanded_key);
 }
 
 /*

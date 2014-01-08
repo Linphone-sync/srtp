@@ -148,7 +148,7 @@ aes_cbc_set_iv(aes_cbc_ctx_t *c, void *iv) {
 }
 
 err_status_t
-aes_cbc_encrypt(aes_cbc_ctx_t *c,
+srtp_aes_cbc_encrypt(aes_cbc_ctx_t *c,
 		unsigned char *data, 
 		unsigned int *bytes_in_data) {
   int i;
@@ -198,7 +198,7 @@ aes_cbc_encrypt(aes_cbc_ctx_t *c,
 }
 
 err_status_t
-aes_cbc_decrypt(aes_cbc_ctx_t *c,
+srtp_aes_cbc_decrypt(aes_cbc_ctx_t *c,
 		unsigned char *data, 
 		unsigned int *bytes_in_data) {
   int i;
@@ -237,7 +237,7 @@ aes_cbc_decrypt(aes_cbc_ctx_t *c,
 	      v128_hex_string(&state));
     
     /* decrypt state */
-    aes_decrypt(&state, &c->expanded_key);
+    srtp_aes_decrypt(&state, &c->expanded_key);
 
     debug_print(mod_aes_cbc, "outblock: %s", 
 	      v128_hex_string(&state));
@@ -288,7 +288,7 @@ aes_cbc_nist_encrypt(aes_cbc_ctx_t *c,
   /*
    * now cbc encrypt the padded data 
    */
-  status = aes_cbc_encrypt(c, data, bytes_in_data);
+  status = srtp_aes_cbc_encrypt(c, data, bytes_in_data);
   if (status) 
     return status;
 
@@ -307,7 +307,7 @@ aes_cbc_nist_decrypt(aes_cbc_ctx_t *c,
   /*
    * cbc decrypt the padded data 
    */
-  status = aes_cbc_decrypt(c, data, bytes_in_data);
+  status = srtp_aes_cbc_decrypt(c, data, bytes_in_data);
   if (status) 
     return status;
 

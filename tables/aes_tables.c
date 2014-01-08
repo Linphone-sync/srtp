@@ -294,7 +294,7 @@ main(void) {
 
 #if AES_INVERSE_TEST
   /* 
-   * test that srtp_aes_encrypt and aes_decrypt are actually
+   * test that srtp_aes_encrypt and srtp_aes_decrypt are actually
    * inverses of each other 
    */
     
@@ -332,7 +332,7 @@ aes_test_inverse(void) {
   aes_expand_encryption_key(k, expanded_key);
   aes_expand_decryption_key(k, decrypt_key);
   srtp_aes_encrypt(&x, expanded_key);
-  aes_decrypt(&x, decrypt_key);
+  srtp_aes_decrypt(&x, decrypt_key);
   
   /* compare to expected value then report */
   v128_copy_octet_string(&y, plaintext);
