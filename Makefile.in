@@ -201,8 +201,8 @@ install:
 	if [ -f libsrtp.a ]; then cp libsrtp.a $(DESTDIR)$(libdir)/; fi
 	if [ -f libsrtp.so.0.0 ]; then \
 		cp libsrtp.so.0.0 $(DESTDIR)$(libdir)/; \
-		ln -s libsrtp.so.0.0 $(DESTDIR)$(libdir)/libsrtp.so.0; \
-		ln -s libsrtp.so.0.0 $(DESTDIR)$(libdir)/libsrtp.so; \
+		ln -sf libsrtp.so.0.0 $(DESTDIR)$(libdir)/libsrtp.so.0; \
+		ln -sf libsrtp.so.0.0 $(DESTDIR)$(libdir)/libsrtp.so; \
 	fi
 
 uninstall:
