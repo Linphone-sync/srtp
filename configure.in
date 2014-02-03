@@ -37,16 +37,36 @@ case $host_cpu in
 esac	
 
 dnl Check if we are on a Windows platform.
+VERSION=`cat $srcdir/VERSION`
 case $host_os in
-    *cygwin*|*mingw* ) 
+    *darwin* )
+	EXE=""
+	shlibdir=$libdir
+	SHLIB=.dylib
+	SHLIBVERSION=.$VERSION$SHLIB
+	;;
+    *cygwin*|*mingw* )
+	LDFLAGS="-Wl,--no-undefined $LDFLAGS"
+	shlibdir=$bindir
 	EXE=.exe
-	HOST_IS_WINDOWS=yes
+	SHLIB=""
+	SHLIBVERSION=-$VERSION.dll
 	;;
     * )
+	CFLAGS="-fPIC $CFLAGS"
 	EXE=""
+	shlibdir=$libdir
+	SHLIB=.so
+	SHLIBVERSION=$SHLIB.$VERSION
 	;;
 esac
+
+AC_SUBST(host_os)
+AC_SUBST(shlibdir)
 AC_SUBST(EXE)   # define executable suffix; this is needed for `make clean'
+
+AC_SUBST(SHLIB)   # define library suffix; this is needed for `make clean'
+AC_SUBST(SHLIBVERSION)   # define library suffix; this is needed for `make clean'
 
 
 AC_ARG_ENABLE(kernel-linux,
@@ -119,7 +139,7 @@ if test "x$ac_cv_func_socket" = "xno"; then
   AC_CHECK_LIB(socket, socket)
   AC_MSG_CHECKING([for socket in -lwsock32])
   SAVELIBS="$LIBS"
-  LIBS="$LIBS -lwsock32"
+  LIBS="$LIBS -lwsock32 -lws2_32"
   AC_TRY_LINK([
 #include <winsock2.h>
 ],[

@@ -309,7 +309,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS RANLIB ac_ct_RANLIB CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA build build_cpu build_vendor build_os host host_cpu host_vendor host_os EXE RNG_OBJS CPP EGREP GDOI_OBJS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir shlibdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS RANLIB ac_ct_RANLIB CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA build build_cpu build_vendor build_os host host_cpu host_vendor host_os EXE SHLIB SHLIBVERSION RNG_OBJS CPP EGREP GDOI_OBJS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -2735,13 +2735,27 @@ _ACEOF
 	;;
 esac
 
+VERSION=`cat $srcdir/VERSION`
 case $host_os in
-    *cygwin*|*mingw* )
+    *darwin* ) 
+	EXE=""
+	shlibdir=$libdir
+	SHLIB=.dylib
+	SHLIBVERSION=.$VERSION$SHLIB
+	;;
+    *cygwin*|*mingw* ) 
+	LDFLAGS="-Wl,--no-undefined $LDFLAGS"
+	shlibdir=$bindir
 	EXE=.exe
-	HOST_IS_WINDOWS=yes
+	SHLIB=""
+	SHLIBVERSION=-$VERSION.dll
 	;;
     * )
 	EXE=""
+	CFLAGS="-fPIC $CFLAGS"
+	shlibdir=$libdir
+	SHLIB=.so
+	SHLIBVERSION=$SHLIB.$VERSION
 	;;
 esac
    # define executable suffix; this is needed for `make clean'
@@ -6990,7 +7004,7 @@ fi
   echo "$as_me:$LINENO: checking for socket in -lwsock32" >&5
 echo $ECHO_N "checking for socket in -lwsock32... $ECHO_C" >&6
   SAVELIBS="$LIBS"
-  LIBS="$LIBS -lwsock32"
+  LIBS="$LIBS -lwsock32 -lws2_32"
   cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -7773,6 +7787,7 @@ s,@sysconfdir@,$sysconfdir,;t t
 s,@sharedstatedir@,$sharedstatedir,;t t
 s,@localstatedir@,$localstatedir,;t t
 s,@libdir@,$libdir,;t t
+s,@shlibdir@,$shlibdir,;t t
 s,@includedir@,$includedir,;t t
 s,@oldincludedir@,$oldincludedir,;t t
 s,@infodir@,$infodir,;t t
@@ -7806,6 +7821,8 @@ s,@host_cpu@,$host_cpu,;t t
 s,@host_vendor@,$host_vendor,;t t
 s,@host_os@,$host_os,;t t
 s,@EXE@,$EXE,;t t
+s,@SHLIB@,$SHLIB,;t t
+s,@SHLIBVERSION@,$SHLIBVERSION,;t t
 s,@RNG_OBJS@,$RNG_OBJS,;t t
 s,@CPP@,$CPP,;t t
 s,@EGREP@,$EGREP,;t t
