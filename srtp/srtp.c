@@ -1817,6 +1817,8 @@ srtp_unprotect_rtcp(srtp_t ctx, void *srtcp_hdr, int *pkt_octet_len) {
   srtp_stream_ctx_t *stream;
   int prefix_len;
   uint32_t seq_num;
+  int e_bit_in_packet;     /* whether the E-bit was found in the packet */
+  int sec_serv_confidentiality; /* whether confidentiality was requested */
 
   /* we assume the hdr is 32-bit aligned to start */
   /*
@@ -1855,6 +1857,9 @@ srtp_unprotect_rtcp(srtp_t ctx, void *srtcp_hdr, int *pkt_octet_len) {
     } 
   }
   
+  sec_serv_confidentiality = stream->rtcp_services == sec_serv_conf ||
+      stream->rtcp_services == sec_serv_conf_and_auth;
+
   /* get tag length from stream context */
   tag_len = auth_get_tag_length(stream->rtcp_auth); 
 
@@ -1873,8 +1878,13 @@ srtp_unprotect_rtcp(srtp_t ctx, void *srtcp_hdr, int *pkt_octet_len) {
    *	 multiples of 32-bits (RFC 3550 6.1)
    */
   trailer = (uint32_t *) ((char *) hdr +
-		     *pkt_octet_len -(tag_len + sizeof(srtcp_trailer_t)));
-  if (*((unsigned char *) trailer) & SRTCP_E_BYTE_BIT) {
+      *pkt_octet_len -(tag_len + sizeof(srtcp_trailer_t)));
+  e_bit_in_packet =
+      (*((unsigned char *) trailer) & SRTCP_E_BYTE_BIT) == SRTCP_E_BYTE_BIT;
+  if (e_bit_in_packet != sec_serv_confidentiality) {
+    return err_status_cant_check;
+  }
+  if (sec_serv_confidentiality) {
     enc_start = (uint32_t *)hdr + uint32s_in_rtcp_header;  
   } else {
     enc_octet_len = 0;
@@ -2053,23 +2063,18 @@ crypto_policy_set_from_profile_for_rtp(crypto_policy_t *policy,
   switch(profile) {
   case srtp_profile_aes128_cm_sha1_80:
     crypto_policy_set_aes_cm_128_hmac_sha1_80(policy);
-    crypto_policy_set_aes_cm_128_hmac_sha1_80(policy);
     break;
   case srtp_profile_aes128_cm_sha1_32:
     crypto_policy_set_aes_cm_128_hmac_sha1_32(policy);
-    crypto_policy_set_aes_cm_128_hmac_sha1_80(policy);
     break;
   case srtp_profile_null_sha1_80:
-    crypto_policy_set_null_cipher_hmac_sha1_80(policy);
     crypto_policy_set_null_cipher_hmac_sha1_80(policy);
     break;
   case srtp_profile_aes256_cm_sha1_80:
     crypto_policy_set_aes_cm_256_hmac_sha1_80(policy);
-    crypto_policy_set_aes_cm_256_hmac_sha1_80(policy);
     break;
   case srtp_profile_aes256_cm_sha1_32:
     crypto_policy_set_aes_cm_256_hmac_sha1_32(policy);
-    crypto_policy_set_aes_cm_256_hmac_sha1_80(policy);
     break;
     /* the following profiles are not (yet) supported */
   case srtp_profile_null_sha1_32:
@@ -2090,6 +2095,8 @@ crypto_policy_set_from_profile_for_rtcp(crypto_policy_t *policy,
     crypto_policy_set_aes_cm_128_hmac_sha1_80(policy);
     break;
   case srtp_profile_aes128_cm_sha1_32:
+    /* We do not honor the 32-bit auth tag request since
+     * this is not compliant with RFC 3711 */
     crypto_policy_set_aes_cm_128_hmac_sha1_80(policy);
     break;
   case srtp_profile_null_sha1_80:
@@ -2099,6 +2106,8 @@ crypto_policy_set_from_profile_for_rtcp(crypto_policy_t *policy,
     crypto_policy_set_aes_cm_256_hmac_sha1_80(policy);
     break;
   case srtp_profile_aes256_cm_sha1_32:
+    /* We do not honor the 32-bit auth tag request since
+     * this is not compliant with RFC 3711 */
     crypto_policy_set_aes_cm_256_hmac_sha1_80(policy);
     break;
     /* the following profiles are not (yet) supported */
