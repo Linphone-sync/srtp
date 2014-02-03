@@ -217,8 +217,8 @@ install:
 	if [ "$(srcdir)" != "." ]; then cp -f crypto/include/*.h $(DESTDIR)$(includedir)/srtp; fi
 	if [ -f libsrtp.a ]; then cp libsrtp.a $(DESTDIR)$(libdir)/; fi
 	if [ -f libsrtp.dll.a ]; then cp libsrtp.dll.a $(DESTDIR)$(libdir)/; fi
-	if [ -f libsrtp${SHLIB} ]; then cp -d libsrtp${SHLIB} $(DESTDIR)$(shlibdir)/; fi
-	if [ -f libsrtp${SHLIBVERSION} ]; then cp -d libsrtp${SHLIBVERSION} $(DESTDIR)$(shlibdir)/; fi
+	if [ -f libsrtp${SHLIB} ]; then cp -a libsrtp${SHLIB} $(DESTDIR)$(shlibdir)/; fi
+	if [ -f libsrtp${SHLIBVERSION} ]; then cp -a libsrtp${SHLIBVERSION} $(DESTDIR)$(shlibdir)/; fi
 
 uninstall:
 	rm -f $(DESTDIR)$(includedir)/srtp/*.h
