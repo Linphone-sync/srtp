@@ -172,7 +172,11 @@ add_subdirectory(include)
 add_subdirectory(crypto/include)
 
 
-add_definitions("-Wall -fexpensive-optimizations -funroll-loops -fPIC")
+if(MSVC)
+	add_definitions("/W3")
+else(MSVC)
+	add_definitions("-Wall -fexpensive-optimizations -funroll-loops -fPIC")
+endif(MSVC)
 
 source_group(ciphers FILES
 	crypto/cipher/cipher.c
