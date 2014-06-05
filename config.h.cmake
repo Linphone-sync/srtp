@@ -20,56 +20,56 @@
 *
 ****************************************************************************/
 
-#cmakedefine ENABLE_DEBUGGING
-#cmakedefine SRTP_KERNEL
-#cmakedefine SRTP_KERNEL_LINUX
+#cmakedefine ENABLE_DEBUGGING 1
+#cmakedefine SRTP_KERNEL 1
+#cmakedefine SRTP_KERNEL_LINUX 1
 #cmakedefine DEV_URANDOM "@DEV_URANDOM@"
-#cmakedefine GENERIC_AESICM
-#cmakedefine USE_SYSLOG
-#cmakedefine ERR_REPORTING_STDOUT
-#cmakedefine USE_ERR_REPORTING_FILE
+#cmakedefine GENERIC_AESICM 1
+#cmakedefine USE_SYSLOG 1
+#cmakedefine ERR_REPORTING_STDOUT 1
+#cmakedefine USE_ERR_REPORTING_FILE 1
 #cmakedefine ERR_REPORTING_FILE "@ERR_REPORTING_FILE@"
-#cmakedefine SRTP_GDOI
+#cmakedefine SRTP_GDOI 1
 
-#cmakedefine CPU_CISC
-#cmakedefine CPU_RISC
-#cmakedefine HAVE_X86
-#cmakedefine WORDS_BIGENDIAN
+#cmakedefine CPU_CISC 1
+#cmakedefine CPU_RISC 1
+#cmakedefine HAVE_X86 1
+#cmakedefine WORDS_BIGENDIAN 1
 
-#cmakedefine HAVE_STDLIB_H
-#cmakedefine HAVE_UNISTD_H
-#cmakedefine HAVE_BYTESWAP_H
-#cmakedefine HAVE_STDINT_H
-#cmakedefine HAVE_SYS_UIO_H
-#cmakedefine HAVE_INTTYPES_H
-#cmakedefine HAVE_SYS_TYPES_H
-#cmakedefine HAVE_MACHINE_TYPES_H
-#cmakedefine HAVE_SYS_INT_TYPES_H
-#cmakedefine HAVE_SYS_SOCKET_H
-#cmakedefine HAVE_NETINET_IN_H
-#cmakedefine HAVE_ARPA_INET_H
-#cmakedefine HAVE_WINDOWS_H
-#cmakedefine HAVE_WINSOCK2_H
-#cmakedefine HAVE_SYSLOG_H
-#cmakedefine HAVE_MEMORY_H
-#cmakedefine HAVE_STRINGS_H
-#cmakedefine HAVE_STRING_H
-#cmakedefine HAVE_SYS_STAT_H
+#cmakedefine HAVE_STDLIB_H 1
+#cmakedefine HAVE_UNISTD_H 1
+#cmakedefine HAVE_BYTESWAP_H 1
+#cmakedefine HAVE_STDINT_H 1
+#cmakedefine HAVE_SYS_UIO_H 1
+#cmakedefine HAVE_INTTYPES_H 1
+#cmakedefine HAVE_SYS_TYPES_H 1
+#cmakedefine HAVE_MACHINE_TYPES_H 1
+#cmakedefine HAVE_SYS_INT_TYPES_H 1
+#cmakedefine HAVE_SYS_SOCKET_H 1
+#cmakedefine HAVE_NETINET_IN_H 1
+#cmakedefine HAVE_ARPA_INET_H 1
+#cmakedefine HAVE_WINDOWS_H 1
+#cmakedefine HAVE_WINSOCK2_H 1
+#cmakedefine HAVE_SYSLOG_H 1
+#cmakedefine HAVE_MEMORY_H 1
+#cmakedefine HAVE_STRINGS_H 1
+#cmakedefine HAVE_STRING_H 1
+#cmakedefine HAVE_SYS_STAT_H 1
 
-#cmakedefine HAVE_SOCKET
-#cmakedefine HAVE_INET_ATON
-#cmakedefine HAVE_USLEEP
-#cmakedefine HAVE_SIGACTION
+#cmakedefine HAVE_SOCKET 1
+#cmakedefine HAVE_INET_ATON 1
+#cmakedefine HAVE_USLEEP 1
+#cmakedefine HAVE_SIGACTION 1
 
-#cmakedefine HAVE_LIBSOCKET
+#cmakedefine HAVE_LIBSOCKET 1
 
-#cmakedefine HAVE_INT8_T
-#cmakedefine HAVE_INT16_T
-#cmakedefine HAVE_INT32_T
-#cmakedefine HAVE_UINT8_T
-#cmakedefine HAVE_UINT16_T
-#cmakedefine HAVE_UINT32_T
-#cmakedefine HAVE_UINT64_T
+#cmakedefine HAVE_INT8_T 1
+#cmakedefine HAVE_INT16_T 1
+#cmakedefine HAVE_INT32_T 1
+#cmakedefine HAVE_UINT8_T 1
+#cmakedefine HAVE_UINT16_T 1
+#cmakedefine HAVE_UINT32_T 1
+#cmakedefine HAVE_UINT64_T 1
 #cmakedefine SIZEOF_UNSIGNED_LONG @SIZEOF_UNSIGNED_LONG@
 #cmakedefine SIZEOF_UNSIGNED_LONG_LONG @SIZEOF_UNSIGNED_LONG_LONG@
 
