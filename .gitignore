@@ -44,3 +44,4 @@ test/replay_driver
 test/roc_driver
 test/rtpw
 test/srtp_driver
+config.h
