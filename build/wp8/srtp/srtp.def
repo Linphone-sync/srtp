@@ -8,6 +8,7 @@ srtp_unprotect
 srtp_create
 srtp_add_stream
 srtp_remove_stream
+srtp_shutdown
 crypto_policy_set_rtp_default
 crypto_policy_set_rtcp_default
 crypto_policy_set_aes_cm_128_hmac_sha1_32
