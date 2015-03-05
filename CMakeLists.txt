@@ -301,12 +301,6 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/config.h
 )
 
 
-install(FILES FindSRTP.cmake
-	DESTINATION share/cmake/Modules
-	PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
-)
-
-
 if(ENABLE_TEST_PROGRAMS)
 	add_executable(srtp_driver
 		test/srtp_driver.c
